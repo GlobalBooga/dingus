@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     Rigidbody rb;
     Camera cam;
 
-    MyInput input;
 
     Vector3 moveDir;
 
@@ -16,31 +15,25 @@ public class Player : MonoBehaviour
 
     IInteractable interactable;
 
-    private void Awake()
+    private void Start()
     {
-        input = new MyInput();
         cam = Camera.main;
         rb = GetComponent<Rigidbody>();
 
-        input.General.WASD.performed += Move;
-        input.General.WASD.canceled += ctx => { moveDir = Vector3.zero; };
+        StaticStuff.input.General.WASD.performed += Move;
+        StaticStuff.input.General.WASD.canceled += ctx => { moveDir = Vector3.zero; };
 
-        input.General.Look.performed += Look;
+        StaticStuff.input.General.Look.performed += Look;
 
-        input.General.Interact.performed += Interact;
+        StaticStuff.input.General.Interact.performed += Interact;
 
-        input.General.Enable();
+        StaticStuff.input.General.Enable();
         Cursor.lockState = CursorLockMode.Locked; 
-    }
-
-    private void Start()
-    {
-
     }
 
     private void OnDestroy()
     {
-        input.Dispose();
+        StaticStuff.input.Dispose();
     }
 
     // Update is called once per frame
@@ -72,6 +65,7 @@ public class Player : MonoBehaviour
         if (interactable != null)
         {
             interactable.Interact();
+            StaticStuff.instance.HideInteractPrompt();
         }
     }
 
@@ -94,6 +88,7 @@ public class Player : MonoBehaviour
             {
                 StaticStuff.instance.HideInteractPrompt();
                 interacter.EndInteraction();
+
                 interactable = null;
             }
             else

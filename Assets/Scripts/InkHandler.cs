@@ -1,31 +1,77 @@
 using Ink.Runtime;
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InkHandler : MonoBehaviour
 {
     public TextAsset inkJSON;
-    private Story story;
+    public Story story { get; private set; }
+    public Action onStoryEnded;
 
-    void Start()
+    float btnHeight;
+
+    public void StartStory()
     {
-        story = new Story(inkJSON.text); 
-        //Debug.Log(loadStoryChunk());
-
-        foreach (var item in story.currentChoices)
-        {
-            Debug.Log(item.text);
-        }
+        story = new Story(inkJSON.text);
+        ProgressStory();
     }
 
-    string loadStoryChunk()
+    public void ProgressStory()
     {
+        if (StaticStuff.isPrintingDialogue)
+        {
+            StaticStuff.instance.PrintDialogue(story.currentText);
+            return;
+        }
+
         string text = "";
 
         if (story.canContinue)
         {
-            text = story.ContinueMaximally();
+            text = story.Continue();
+        }
+        else
+        {
+            if (story.currentChoices.Count > 0)
+            {
+                foreach (var item in story.currentChoices)
+                {
+                    RectTransform btn = Instantiate(StaticStuff.instance.choiceButtonPrefab, StaticStuff.buttonLayoutGroup.transform).transform as RectTransform;
+                    if (btnHeight == 0) btnHeight = btn.rect.height + 5;
+                    StaticStuff.buttonLayoutGroup.transform.position += Vector3.up * btnHeight/2;
+                    btn.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        MakeChoice(item.index);
+                    });
+
+                    btn.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.text;
+
+                }
+                StaticStuff.input.General.Interact.Disable();
+                return;
+            }
+          
+            //done
+            StaticStuff.instance.HideDialogueBox();
+            onStoryEnded?.Invoke();
         }
 
-        return text;
+        StaticStuff.instance.PrintDialogue(text);
     }
+
+
+    public void MakeChoice(int choiceIndex)
+    {
+        // make choice
+        story.ChooseChoiceIndex(choiceIndex);
+
+        StaticStuff.ResetButtonLayoutGroup();
+
+        // continue
+        story.Continue();
+        ProgressStory();
+    }
+    
 }

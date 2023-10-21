@@ -1,40 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Customer : MonoBehaviour, IInteractable
 {
     bool interacting;
+    bool startedStory;
+    InkHandler inky;
     
     public void EndInteraction()
     {
         StaticStuff.instance.HideDialogueBox();
+        interacting = false;
+        startedStory = false;
+
+        // resets the buttons in case we were making a choice
+        StaticStuff.ResetButtonLayoutGroup();
+
+        StaticStuff.input.General.Look.Enable();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Interact()
     {
-        if (!interacting)
+        if (interacting)
         {
-            interacting = true;
-            StaticStuff.instance.ShowDialogueBox();
+            inky.ProgressStory();
+            return;
         }
-        else
-        {
-            interacting = false;
-            StaticStuff.instance.HideDialogueBox();
-        }
+
+        interacting = true;
+        StaticStuff.instance.ShowDialogueBox();
+
+        StaticStuff.input.General.Look.Disable();
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        inky = GetComponent<InkHandler>();
+        inky.onStoryEnded += EndInteraction;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (StaticStuff.isReadyForDialogue && interacting && !startedStory)
+        {
+            startedStory = true;
+            inky.StartStory();
+        }
     }
 }
