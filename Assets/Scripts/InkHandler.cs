@@ -9,7 +9,7 @@ public class InkHandler : MonoBehaviour
     void Start()
     {
         story = new Story(inkJSON.text); 
-        Debug.Log(loadStoryChunk());
+        //Debug.Log(loadStoryChunk());
 
         foreach (var item in story.currentChoices)
         {
@@ -23,7 +23,6 @@ public class InkHandler : MonoBehaviour
 
         if (story.canContinue)
         {
-
             text = story.ContinueMaximally();
         }
 

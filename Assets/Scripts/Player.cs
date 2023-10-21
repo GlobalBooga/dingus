@@ -68,9 +68,19 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other is Interactable)
+        IInteractable interacter;
+        if (other.TryGetComponent(out interacter))
         {
-            Debug.Log("take");
+            interacter.Interact();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractable interacter;
+        if (other.TryGetComponent(out interacter))
+        {
+            interacter.EndInteraction();
         }
     }
 }
