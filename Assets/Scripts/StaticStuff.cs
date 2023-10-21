@@ -40,6 +40,7 @@ public class StaticStuff : MonoBehaviour
         SetDialogueHidden();
 
         interactPrompt = GameObject.Find("InteractPrompt");
+        HideInteractPrompt();
     }
 
     public void ShowDialogueBox()
@@ -84,12 +85,12 @@ public class StaticStuff : MonoBehaviour
 
     public void ShowInteractPrompt()
     {
-
+        interactPrompt.SetActive(true);
     }
 
     public void HideInteractPrompt()
     {
-
+        interactPrompt.SetActive(false);
     }
 }
 

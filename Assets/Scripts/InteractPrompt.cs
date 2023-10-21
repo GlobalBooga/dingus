@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InteractPrompt : MonoBehaviour
 {
     float time = 0;
-    float delay = 0.75f;
+    [SerializeField] float delay = 0.5f;
     bool isE1 = true;
 
     Image img;

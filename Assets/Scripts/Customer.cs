@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour, IInteractable
 {
+    bool interacting;
+    
     public void EndInteraction()
     {
         StaticStuff.instance.HideDialogueBox();
@@ -11,7 +13,16 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        StaticStuff.instance.ShowDialogueBox();
+        if (!interacting)
+        {
+            interacting = true;
+            StaticStuff.instance.ShowDialogueBox();
+        }
+        else
+        {
+            interacting = false;
+            StaticStuff.instance.HideDialogueBox();
+        }
     }
 
 

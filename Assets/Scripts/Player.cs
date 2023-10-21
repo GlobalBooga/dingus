@@ -5,7 +5,6 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float sens, speed;
     Rigidbody rb;
-    CapsuleCollider cc;
     Camera cam;
 
     MyInput input;
@@ -15,25 +14,28 @@ public class Player : MonoBehaviour
     float rotationY;
     float rotationX;
 
+    IInteractable interactable;
+
     private void Awake()
     {
         input = new MyInput();
-
-        rb = GetComponent<Rigidbody>();
-        cc = GetComponent<CapsuleCollider>();
-
-
-        input.General.Enable();
         cam = Camera.main;
-    }
-    private void Start()
-    {
+        rb = GetComponent<Rigidbody>();
+
         input.General.WASD.performed += Move;
         input.General.WASD.canceled += ctx => { moveDir = Vector3.zero; };
 
         input.General.Look.performed += Look;
 
+        input.General.Interact.performed += Interact;
+
+        input.General.Enable();
         Cursor.lockState = CursorLockMode.Locked; 
+    }
+
+    private void Start()
+    {
+
     }
 
     private void OnDestroy()
@@ -63,7 +65,14 @@ public class Player : MonoBehaviour
     {
         Vector2 input = ctx.ReadValue<Vector2>();
         moveDir = new Vector3(input.x, 0, input.y);
+    }
 
+    void Interact(InputAction.CallbackContext ctx)
+    {
+        if (interactable != null)
+        {
+            interactable.Interact();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,7 +80,8 @@ public class Player : MonoBehaviour
         IInteractable interacter;
         if (other.TryGetComponent(out interacter))
         {
-            interacter.Interact();
+            StaticStuff.instance.ShowInteractPrompt();
+            interactable = interacter;
         }
     }
 
@@ -80,7 +90,16 @@ public class Player : MonoBehaviour
         IInteractable interacter;
         if (other.TryGetComponent(out interacter))
         {
-            interacter.EndInteraction();
+            if (interacter == interactable)
+            {
+                StaticStuff.instance.HideInteractPrompt();
+                interacter.EndInteraction();
+                interactable = null;
+            }
+            else
+            {
+                Debug.Log("a");
+            }
         }
     }
 }
