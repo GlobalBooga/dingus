@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +7,8 @@ public class StoryEvents : MonoBehaviour
     public static StoryEvents instance;
 
     const string getWigEvent = "GoGetWig\n";
+    const string badStylingEvent = "BadWigStyling\n";
+    const string goodStylingEvent = "GoodWigStyling\n";
     public GameObject wigPrefab;
     public Wig wig;
     public GameObject[] wigPath;
@@ -14,6 +16,8 @@ public class StoryEvents : MonoBehaviour
     public TextMeshProUGUI objective;
 
     public static bool gotWig;
+
+    InkHandler currentInkRef;
 
     private void Awake()
     {
@@ -39,9 +43,12 @@ public class StoryEvents : MonoBehaviour
         };
     }
 
-    public void CallEvent(string eventName)
+    public void CallEvent(string eventName, InkHandler sender)
     {
+        currentInkRef = sender;
         if (eventName == getWigEvent) GoGetWig();
+        else if (eventName == goodStylingEvent) StartCoroutine(WigStyling());
+        else if (eventName == badStylingEvent) StartCoroutine(WigStyling());
     }
 
     public void GoGetWig()
@@ -52,5 +59,33 @@ public class StoryEvents : MonoBehaviour
         {
             t.SetActive(true);
         }
+    }
+
+
+    IEnumerator WigStyling()
+    {
+        StaticStuff.instance.HideDialogueBox();
+        StaticStuff.ResetButtonLayoutGroup();
+        StaticStuff.buttonLayoutGroup.SetActive(false);
+
+        while (StaticStuff.isReadyForDialogue)
+        {
+            yield return null;
+        }
+
+        StaticStuff.player.PlayAnimation("CutHair");
+
+        yield return new WaitForSeconds(1f);
+
+        StaticStuff.transitionImage.StartTransition(0, 1);
+
+        yield return new WaitForSeconds(1);
+        currentInkRef.GetComponent<Customer>().wig.SetActive(true);
+
+        StaticStuff.transitionImage.StartTransition(1, 0);
+
+
+        StaticStuff.buttonLayoutGroup.SetActive(true);
+        StaticStuff.instance.ShowDialogueBox();
     }
 }

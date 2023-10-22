@@ -1,3 +1,4 @@
+...
 * Sorry for the wait. Here's what I got for you.
 -> patient
 * Here's what I got for you.
@@ -12,7 +13,7 @@ Took you long en- W-WHAT'S THAT!! There's no way I'm putting that on my head.
 === mocking ===
 jUsT tRuSt ThE pRoCeSs...
 
-* \\BadWigStyling 
+* Style poorly\\BadWigStyling 
 -> BadWigStyling
 
 === patient ===
@@ -30,7 +31,7 @@ Gerald. My names Gerald.
 === trust ===
 In that case I'll put my trust in you once again.
 
-* \\GoodWigStyling 
+* Style hair\\GoodWigStyling 
 -> GoodWigStyling
 
 === GoodWigStyling ===

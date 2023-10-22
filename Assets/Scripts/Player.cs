@@ -99,4 +99,9 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public void PlayAnimation(string triggerName)
+    {
+        rightAnimator.SetTrigger(triggerName);
+    }
 }

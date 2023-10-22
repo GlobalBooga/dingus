@@ -1,10 +1,14 @@
 using UnityEngine;
 
+// old man
 public class Customer : MonoBehaviour, IInteractable
 {
     bool interacting;
     bool startedStory;
     InkHandler inky;
+    bool waitingForWig;
+
+    public GameObject wig;
     
     public void EndInteraction()
     {
@@ -21,6 +25,7 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        // all parts
         if (interacting)
         {
             inky.ProgressStory();
@@ -34,19 +39,34 @@ public class Customer : MonoBehaviour, IInteractable
         Cursor.lockState = CursorLockMode.None;
     }
 
-
     private void Awake()
     {
         inky = GetComponent<InkHandler>();
-        inky.onStoryEnded += EndInteraction;
+        inky.onStoryEnded += ()=> { EndInteraction(); waitingForWig = true;};
     }
 
     void Update()
     {
-        if (StaticStuff.isReadyForDialogue && interacting && !startedStory)
+        if (StaticStuff.isReadyForDialogue && interacting)
         {
-            startedStory = true;
-            inky.StartStory();
+            // part 1
+            if (!startedStory)
+            {
+                startedStory = true;
+                inky.StartStory(0);
+            }
+
+            // part 2
+            else if (waitingForWig)
+            {
+                if (!StoryEvents.gotWig) return;
+
+                StoryEvents.instance.objective.text = "";
+
+                waitingForWig = false;
+                inky.StartStory(1);
+                inky.ProgressStory();
+            }
         }
     }
 }
