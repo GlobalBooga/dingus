@@ -6,13 +6,22 @@ public class StaticStuff : MonoBehaviour
 {
     public static StaticStuff instance;
     public static GameObject minimap;
+    public static Transform minimapCamera;
     public static Player player;
     public static MyInput input;
     public static GameObject canvas;
     public static GameObject buttonLayoutGroup;
+    public static SecretRoomBlocker secretRoomBlocker;
+
+    public static Transform goUpstairsTrigger;
+    public static Transform goDownstairsTrigger;
+    public static TransitionImage transitionImage;
+
 
     public GameObject choiceButtonPrefab;
     static Vector3 buttonLayoutDefaultPos;
+
+    public StoryEvents events;
 
 
     [Header("DIALOGUE BOX")]
@@ -46,10 +55,14 @@ public class StaticStuff : MonoBehaviour
 
         input = new MyInput();
 
+        transitionImage = GameObject.Find("TransitionImage").GetComponent<TransitionImage>();
+        secretRoomBlocker = GameObject.Find("SecretRoomBlocker").GetComponent<SecretRoomBlocker>();
+
         buttonLayoutGroup = GameObject.Find("DialogueChoices");
         buttonLayoutDefaultPos = buttonLayoutGroup.transform.position;
         canvas = GameObject.Find("Canvas");
         minimap = GameObject.Find("Minimap");
+        minimapCamera = GameObject.Find("minimapCamera").transform;
         player = GameObject.Find("Player").GetComponent<Player>();
         dialogueText = GameObject.Find("DialogueText").GetComponent<TextMeshProUGUI>();
 
@@ -60,6 +73,10 @@ public class StaticStuff : MonoBehaviour
 
         interactPrompt = GameObject.Find("InteractPrompt");
         HideInteractPrompt();
+
+
+        goUpstairsTrigger = GameObject.Find("GoUpstairs").transform;
+        goDownstairsTrigger = GameObject.Find("GoDownstairs").transform;
     }
 
     public void ShowDialogueBox()
@@ -159,6 +176,5 @@ public class StaticStuff : MonoBehaviour
 
         input.General.Interact.Enable();
     }
-
 }
 

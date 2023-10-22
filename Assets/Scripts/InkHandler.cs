@@ -3,6 +3,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InkHandler : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class InkHandler : MonoBehaviour
 
     public void ProgressStory()
     {
+        if (!story) return;
+
         if (StaticStuff.isPrintingDialogue)
         {
             StaticStuff.instance.PrintDialogue(story.currentText);
@@ -31,6 +34,11 @@ public class InkHandler : MonoBehaviour
         if (story.canContinue)
         {
             text = story.Continue();
+            if (text.Contains('\\'))
+            {
+                string func = text.Substring(text.IndexOf('\\'));
+                StoryEvents.instance.Invoke(func, 0);
+            }
         }
         else
         {
@@ -46,8 +54,9 @@ public class InkHandler : MonoBehaviour
                         MakeChoice(item.index);
                     });
 
-                    btn.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.text;
 
+                    string newtext = item.text.Contains('\\')? item.text.Remove(item.text.IndexOf('\\')) : newtext = item.text;
+                    btn.GetChild(0).GetComponent<TextMeshProUGUI>().text = newtext;
                 }
                 StaticStuff.input.General.Interact.Disable();
                 return;
@@ -70,7 +79,12 @@ public class InkHandler : MonoBehaviour
         StaticStuff.ResetButtonLayoutGroup();
 
         // continue
-        story.Continue();
+        string text = story.Continue();
+        if (text.Contains('\\'))
+        {
+            string func = text.Substring(text.IndexOf('\\') + 1);
+            StaticStuff.instance.events.CallEvent(func);
+        }
         ProgressStory();
     }
     
