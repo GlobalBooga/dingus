@@ -12,7 +12,8 @@ Took you long en- W-WHAT'S THAT!! There's no way I'm putting that on my head.
 === mocking ===
 jUsT tRuSt ThE pRoCeSs...
 
-* [BadWigStyling] -> BadWigStyling
+* \\BadWigStyling 
+-> BadWigStyling
 
 === patient ===
 That's alright. I'm a little worried cause it's not the wig I was expecting.
@@ -29,7 +30,8 @@ Gerald. My names Gerald.
 === trust ===
 In that case I'll put my trust in you once again.
 
-* [GoodWigStyling] -> GoodWigStyling
+* \\GoodWigStyling 
+-> GoodWigStyling
 
 === GoodWigStyling ===
 * Alright all done! How do you like it?

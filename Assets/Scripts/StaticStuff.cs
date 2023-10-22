@@ -21,9 +21,6 @@ public class StaticStuff : MonoBehaviour
     public GameObject choiceButtonPrefab;
     static Vector3 buttonLayoutDefaultPos;
 
-    public StoryEvents events;
-
-
     [Header("DIALOGUE BOX")]
     [SerializeField] float speed = 4;
     [SerializeField] float printDelay = 0.25f;

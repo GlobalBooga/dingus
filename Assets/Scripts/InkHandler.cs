@@ -36,8 +36,8 @@ public class InkHandler : MonoBehaviour
             text = story.Continue();
             if (text.Contains('\\'))
             {
-                string func = text.Substring(text.IndexOf('\\'));
-                StoryEvents.instance.Invoke(func, 0);
+                string func = text.Substring(text.IndexOf('\\') + 1);
+                StoryEvents.instance.CallEvent(func);
             }
         }
         else
@@ -83,7 +83,7 @@ public class InkHandler : MonoBehaviour
         if (text.Contains('\\'))
         {
             string func = text.Substring(text.IndexOf('\\') + 1);
-            StaticStuff.instance.events.CallEvent(func);
+            StoryEvents.instance.CallEvent(func);
         }
         ProgressStory();
     }
