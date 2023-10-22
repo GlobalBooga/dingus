@@ -27,7 +27,8 @@ public class GoUpstairs : MonoBehaviour
 
         StaticStuff.player.transform.position = StaticStuff.goDownstairsTrigger.position - StaticStuff.goDownstairsTrigger.right;
         StaticStuff.player.transform.rotation.SetLookRotation(StaticStuff.goDownstairsTrigger.right);
-        StaticStuff.minimapCamera.position -= Vector3.down * 10;
+        StaticStuff.minimapCamera.position -= Vector3.down * 8;
         StaticStuff.transitionImage.StartTransition(1, 0);
+        StaticStuff.music.SetMainFloor();
     }
 }

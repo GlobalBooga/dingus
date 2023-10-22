@@ -17,6 +17,8 @@ public class StaticStuff : MonoBehaviour
     public static Transform goDownstairsTrigger;
     public static TransitionImage transitionImage;
 
+    public static Music music;
+
 
     public GameObject choiceButtonPrefab;
     static Vector3 buttonLayoutDefaultPos;
@@ -51,6 +53,8 @@ public class StaticStuff : MonoBehaviour
 
 
         input = new MyInput();
+
+        music = GameObject.Find("Music").GetComponent<Music>();
 
         transitionImage = GameObject.Find("TransitionImage").GetComponent<TransitionImage>();
         secretRoomBlocker = GameObject.Find("SecretRoomBlocker").GetComponent<SecretRoomBlocker>();
