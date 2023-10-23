@@ -26,9 +26,8 @@ public class GoUpstairs : MonoBehaviour
         requestingTP = false;
 
         StaticStuff.player.transform.position = StaticStuff.goDownstairsTrigger.position - StaticStuff.goDownstairsTrigger.right;
-        StaticStuff.player.transform.rotation.SetLookRotation(StaticStuff.goDownstairsTrigger.right);
-        StaticStuff.minimapCamera.position -= Vector3.down * 8;
+        StaticStuff.player.SetLookRotation(-StaticStuff.goUpstairsTrigger.right);
+        StaticStuff.minimapCamera.position = new Vector3(StaticStuff.minimapCamera.position.x, -10f, StaticStuff.minimapCamera.position.z);
         StaticStuff.transitionImage.StartTransition(1, 0);
-        StaticStuff.music.SetMainFloor();
     }
 }

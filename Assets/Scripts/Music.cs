@@ -7,10 +7,11 @@ public class Music : MonoBehaviour
     [SerializeField] AudioClip mainFloor;
     [SerializeField] AudioClip basement;
     AudioSource sound;
+    public int index;
 
     private void Awake()
     {
-        sound = GetComponent<AudioSource>();   
+        sound = GameObject.Find("Music").GetComponent<AudioSource>();
     }
 
     public void SetBasement()
@@ -23,5 +24,11 @@ public class Music : MonoBehaviour
     {
         sound.clip = mainFloor;
         sound.Play();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (index == 0 && sound.clip != mainFloor) SetMainFloor();
+        if (index == 1 && sound.clip != basement) SetBasement();
     }
 }

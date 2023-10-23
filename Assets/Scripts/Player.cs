@@ -15,6 +15,12 @@ public class Player : MonoBehaviour
 
     IInteractable interactable;
 
+    public AudioSource mySfx;
+    [SerializeField] AudioClip snipSfx;
+    [SerializeField] AudioClip slapSfx;
+    [SerializeField] AudioClip footsteps;
+
+
     private void Start()
     {
         cam = Camera.main;
@@ -29,6 +35,9 @@ public class Player : MonoBehaviour
 
         StaticStuff.input.General.Enable();
         Cursor.lockState = CursorLockMode.Locked; 
+        mySfx = GetComponent<AudioSource>();
+
+        rotationY = StaticStuff.RadsToDeg(transform.rotation.eulerAngles.y);
     }
 
     private void OnDestroy()
@@ -48,6 +57,10 @@ public class Player : MonoBehaviour
         Vector2 lookDelta = ctx.ReadValue<Vector2>();
 
         rotationY += lookDelta.x * sens;
+
+        if (rotationY > 360) rotationY -= 360;
+        else if (rotationY < -360) rotationY += 360;
+
         rotationX = Mathf.Clamp(rotationX + lookDelta.y * sens, -90, 90);
 
         transform.localEulerAngles = rotationY * Vector3.up;
@@ -91,10 +104,6 @@ public class Player : MonoBehaviour
 
                 interactable = null;
             }
-            else
-            {
-                Debug.Log("a");
-            }
         }
     }
 
@@ -102,4 +111,17 @@ public class Player : MonoBehaviour
     {
         rightAnimator.SetTrigger(triggerName);
     }
+
+    public void SetLookRotation(Vector3 look)
+    {
+        rotationY = Vector3.SignedAngle(Vector3.forward, look, Vector3.up); 
+        transform.Rotate(Vector3.up,Vector3.Angle(transform.forward, look));
+    }
+
+    public void PlaySnipSFX()
+    {
+        mySfx.clip = snipSfx;
+        mySfx.Play();
+    }
+
 }
