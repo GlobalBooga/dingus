@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     float footstepDelay = 0.3f;
     float footTime;
 
+    public GameObject NormalArm;
+    public GameObject GrabbedBrosky;
+    public GameObject ChokeholdArm;
+
 
     private void Start()
     {
@@ -38,6 +42,11 @@ public class Player : MonoBehaviour
         StaticStuff.input.General.Look.performed += Look;
 
         StaticStuff.input.General.Interact.performed += Interact;
+        StaticStuff.input.General.MoveFingers.performed += ctx =>
+        {
+            if (!StaticStuff.input.General.Look.enabled) return;
+            rightAnimator.SetTrigger("DoInteract");
+        };
 
         StaticStuff.input.General.Enable();
         Cursor.lockState = CursorLockMode.Locked; 

@@ -10,11 +10,13 @@ public class StoryEvents : MonoBehaviour
     const string badStylingEvent = "BadWigStyling\n";
     const string goodStylingEvent = "GoodWigStyling\n";
     const string oldManLeaveEvent = "OldManLeave\n";
+    const string youngManLeaveEvent = "YoungManLeave\n";
     const string youngmanSitEvent = "GoSit\n";
     const string killEvent = "Kill\n";
     public GameObject wigPrefab;
     public Wig wig;
     public GameObject[] wigPath;
+    public GameObject[] killPath;
 
     public TextMeshProUGUI objective;
 
@@ -55,6 +57,7 @@ public class StoryEvents : MonoBehaviour
         else if (eventName == oldManLeaveEvent) OldManLeave();
         else if (eventName == killEvent) Kill();
         else if (eventName == youngmanSitEvent) YoungmanSit();
+        else if (eventName == youngManLeaveEvent) YoungManLeave();
     }
 
     public void GoGetWig()
@@ -69,6 +72,10 @@ public class StoryEvents : MonoBehaviour
         }
     }
 
+    public void YoungManLeave()
+    {
+        customers[1].Leave();
+    }
 
     public void OldManLeave()
     {
@@ -79,16 +86,17 @@ public class StoryEvents : MonoBehaviour
 
     void YoungmanEnter()
     {
-
         customers[1].Enter();
     }
 
     void YoungmanSit()
     {
         StaticStuff.instance.HideDialogueBox();
+        customers[1].pauseStory = true;
+        customers[1].EndInteraction();
+        StaticStuff.buttonLayoutGroup.SetActive(false);
         customers[1].GoSit();
     }
-
 
     IEnumerator WigStyling()
     {
@@ -119,7 +127,21 @@ public class StoryEvents : MonoBehaviour
 
     public void Kill()
     {
-        customers[1].EndInteraction();
+        customers[1].GetGrabbed();
+        objective.text = "TAKE HIS HAIR";
 
+        foreach (var m in killPath)
+        {
+            m.SetActive(true);
+        }
+
+        StaticStuff.secretRoomBlocker.SetUnblocked();
+
+    }
+
+    public void DunkBrosky()
+    {
+        customers[1].gameObject.SetActive(true);
+        customers[1].GetDunked();
     }
 }

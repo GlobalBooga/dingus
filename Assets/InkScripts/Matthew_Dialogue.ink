@@ -4,8 +4,11 @@
 == request ==
 Hey. Um... I'm just looking to get a haircut.
 
-* Well of course! Please, come have a seat.\\YoungManSit
-Alright what are we looking for today?
+* Well of course! Please, come have a seat.\\GoSit
+-> continuing
+
+=== continuing ===
+* Alright what are we looking for today?
 -> question
 
 === question ===
@@ -44,7 +47,7 @@ Just give me my cut before I change my mind.
 * Alright man if you say so.\\GoodWigStyling 
 -> haircut
 * TAKE
-Wait. WHAT ARE YOU DOING! LET GO OF ME!//Kill
+Wait. WHAT ARE YOU DOING! LET GO OF ME!\\Kill
 -> END
 
 === haircut ===
@@ -56,5 +59,5 @@ Ayy, you know what. I actually like it. You had me on the fence but I guess you'
 === conclusion ===
 Here's an extra tip for your work. I'll even recommend people to come give your shop a try.
 
-* Ay, only if they have nice hair like you. Ha ha... ha.
+* Ay, only if they have nice hair like you. Ha ha... ha.\\YoungManLeave
 -> END

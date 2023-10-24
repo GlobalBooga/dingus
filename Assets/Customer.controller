@@ -178,6 +178,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: Enter
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Animations
@@ -304,7 +310,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -8945691123924629249, guid: 1e3ed4d35da1fa24ea14e8dfc5766006, type: 3}
+  m_Motion: {fileID: -8945691123924629249, guid: c98d7c6033d3dc44f8ecc0eb10e5528d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

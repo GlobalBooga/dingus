@@ -11,6 +11,11 @@ public class SecretRoomUnlock : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             mapFog.SetActive(false);
+            foreach (var t in StoryEvents.instance.killPath)
+            {
+                t.SetActive(false);
+            }
         }
+
     }
 }

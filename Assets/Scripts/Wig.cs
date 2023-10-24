@@ -15,6 +15,6 @@ public class Wig : MonoBehaviour, IInteractable
     public void Interact()
     {
         onInteracted?.Invoke();
-        if (gameObject) Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

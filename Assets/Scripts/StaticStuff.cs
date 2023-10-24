@@ -12,6 +12,7 @@ public class StaticStuff : MonoBehaviour
     public static GameObject canvas;
     public static GameObject buttonLayoutGroup;
     public static SecretRoomBlocker secretRoomBlocker;
+    public static Tub tub;
 
     public static Transform goUpstairsTrigger;
     public static Transform goDownstairsTrigger;
@@ -50,6 +51,8 @@ public class StaticStuff : MonoBehaviour
 
 
         input = new MyInput();
+
+        tub = GameObject.Find("sacrifice").GetComponent<Tub>();
 
         transitionImage = GameObject.Find("TransitionImage").GetComponent<TransitionImage>();
         secretRoomBlocker = GameObject.Find("SecretRoomBlocker").GetComponent<SecretRoomBlocker>();

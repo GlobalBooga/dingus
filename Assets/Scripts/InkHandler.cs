@@ -15,6 +15,7 @@ public class InkHandler : MonoBehaviour
 
     public void StartStory(int index)
     {
+        if (inkJSONs.Length <= index) return;
         story = new Story(inkJSONs[index].text);
         ProgressStory();
     }
