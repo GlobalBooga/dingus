@@ -13,7 +13,6 @@ public class StoryEvents : MonoBehaviour
     const string youngManLeaveEvent = "YoungManLeave\n";
     const string youngmanSitEvent = "GoSit\n";
     const string killEvent = "Kill\n";
-    const string killCultistEvent = "KillCultist\n";
     const string cultistLeaveEvent = "CultistLeave\n";
     public GameObject wigPrefab;
     public Wig wig;
@@ -90,7 +89,6 @@ public class StoryEvents : MonoBehaviour
         else if (eventName == killEvent) Kill();
         else if (eventName == youngmanSitEvent) YoungmanSit();
         else if (eventName == youngManLeaveEvent) YoungManLeave();
-        else if (eventName == killCultistEvent) YoungManLeave();
         else if (eventName == cultistLeaveEvent) CultistLeave();
     }
 
@@ -126,11 +124,14 @@ public class StoryEvents : MonoBehaviour
 
     public void OldManLeave()
     {
-        customers[0].Leave();
+        if (!killedBroski)
+        {
+            customers[0].Leave();
+            Invoke(nameof(YoungmanEnter), 8);
 
-        Invoke(nameof(YoungmanEnter), 8);
-
-        gotWig = false;
+            gotWig = false;
+        }
+        else customers[2].Leave();
     }
 
     void YoungmanEnter()

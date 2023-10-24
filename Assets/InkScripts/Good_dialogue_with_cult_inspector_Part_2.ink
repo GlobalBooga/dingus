@@ -1,5 +1,8 @@
 * Excuse me for the wait Sir.
-Shall I proceed with the ritual?
+->question3
+
+=== question3 ===
+* Shall I proceed with the ritual?
 ->ritual
 
 === ritual ===
@@ -16,4 +19,7 @@ Finally, my heart beats with joy and what feels like an eternal warmth of love f
 
 === conclusion ===
 * Right... Anyways so are you gonna pay for the haircut or?
+
+Of course! Here you go.
+Keep up the good work, I'll be back in a month.\\OldManLeave
 -> END

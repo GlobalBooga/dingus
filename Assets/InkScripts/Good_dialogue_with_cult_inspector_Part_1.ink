@@ -1,5 +1,8 @@
 * Hello! Welcome.
-Oh! Sir Cult Priest!
+-> recognition
+
+=== recognition ===
+*Oh! Sir Cult Priest!
 -> undercover
 
 === undercover ===

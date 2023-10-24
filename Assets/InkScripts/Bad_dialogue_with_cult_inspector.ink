@@ -1,5 +1,8 @@
 * Hello! Welcome.
-Oh! Sir Cult Priest!
+-> recognition
+
+=== recognition ===
+*Oh! Sir Cult Priest!
 -> undercover
 
 === undercover ===
@@ -45,7 +48,5 @@ More time?! What about the guy who just left with a below par haircut huh?
 === pushover ===
 I think it's cause you're a pushover. And pushovers don't run undercover facilities. I'm gonna have to take away your business privileges and find someone else to run this place. We'll rename it too.
 
-* Take action\\KillCultist
--> END
-* Say nothing\\CultistLeave
+* ...\\CultistLeave
 -> END
