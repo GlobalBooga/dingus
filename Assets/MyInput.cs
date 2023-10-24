@@ -55,9 +55,9 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MoveFingers"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""f731b9cd-2886-4f42-ae3d-2b4d4d12f32b"",
+                    ""id"": ""55252563-32f7-43e8-a4d7-2fa145a1ac57"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -144,12 +144,40 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a7a5567b-00bd-47f9-8f1d-803f229766ec"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""e366e022-cf0c-493d-875e-fe68a0e9be43"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveFingers"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Paused"",
+            ""id"": ""6fba2ba6-c517-42d4-93fd-ce28fc0e3d53"",
+            ""actions"": [
+                {
+                    ""name"": ""Unpause"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fb1275c-28c0-4ba7-b7b3-d43334b45972"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""54dc192d-bcbd-45c6-849d-4f6726f508d3"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Unpause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -163,7 +191,10 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
         m_General_WASD = m_General.FindAction("WASD", throwIfNotFound: true);
         m_General_Look = m_General.FindAction("Look", throwIfNotFound: true);
         m_General_Interact = m_General.FindAction("Interact", throwIfNotFound: true);
-        m_General_MoveFingers = m_General.FindAction("MoveFingers", throwIfNotFound: true);
+        m_General_Pause = m_General.FindAction("Pause", throwIfNotFound: true);
+        // Paused
+        m_Paused = asset.FindActionMap("Paused", throwIfNotFound: true);
+        m_Paused_Unpause = m_Paused.FindAction("Unpause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -228,7 +259,7 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_General_WASD;
     private readonly InputAction m_General_Look;
     private readonly InputAction m_General_Interact;
-    private readonly InputAction m_General_MoveFingers;
+    private readonly InputAction m_General_Pause;
     public struct GeneralActions
     {
         private @MyInput m_Wrapper;
@@ -236,7 +267,7 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
         public InputAction @WASD => m_Wrapper.m_General_WASD;
         public InputAction @Look => m_Wrapper.m_General_Look;
         public InputAction @Interact => m_Wrapper.m_General_Interact;
-        public InputAction @MoveFingers => m_Wrapper.m_General_MoveFingers;
+        public InputAction @Pause => m_Wrapper.m_General_Pause;
         public InputActionMap Get() { return m_Wrapper.m_General; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -255,9 +286,9 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @MoveFingers.started += instance.OnMoveFingers;
-            @MoveFingers.performed += instance.OnMoveFingers;
-            @MoveFingers.canceled += instance.OnMoveFingers;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IGeneralActions instance)
@@ -271,9 +302,9 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @MoveFingers.started -= instance.OnMoveFingers;
-            @MoveFingers.performed -= instance.OnMoveFingers;
-            @MoveFingers.canceled -= instance.OnMoveFingers;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IGeneralActions instance)
@@ -291,11 +322,61 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
         }
     }
     public GeneralActions @General => new GeneralActions(this);
+
+    // Paused
+    private readonly InputActionMap m_Paused;
+    private List<IPausedActions> m_PausedActionsCallbackInterfaces = new List<IPausedActions>();
+    private readonly InputAction m_Paused_Unpause;
+    public struct PausedActions
+    {
+        private @MyInput m_Wrapper;
+        public PausedActions(@MyInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Unpause => m_Wrapper.m_Paused_Unpause;
+        public InputActionMap Get() { return m_Wrapper.m_Paused; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PausedActions set) { return set.Get(); }
+        public void AddCallbacks(IPausedActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PausedActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PausedActionsCallbackInterfaces.Add(instance);
+            @Unpause.started += instance.OnUnpause;
+            @Unpause.performed += instance.OnUnpause;
+            @Unpause.canceled += instance.OnUnpause;
+        }
+
+        private void UnregisterCallbacks(IPausedActions instance)
+        {
+            @Unpause.started -= instance.OnUnpause;
+            @Unpause.performed -= instance.OnUnpause;
+            @Unpause.canceled -= instance.OnUnpause;
+        }
+
+        public void RemoveCallbacks(IPausedActions instance)
+        {
+            if (m_Wrapper.m_PausedActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPausedActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PausedActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PausedActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PausedActions @Paused => new PausedActions(this);
     public interface IGeneralActions
     {
         void OnWASD(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnMoveFingers(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IPausedActions
+    {
+        void OnUnpause(InputAction.CallbackContext context);
     }
 }

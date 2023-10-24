@@ -16,6 +16,11 @@ public class Music : MonoBehaviour
         basementMusic = GameObject.Find("MusicBasement").GetComponent<AudioSource>();
     }
 
+    private void Start() {
+        PauseManager.instance.PauseEvent += Pause;
+        PauseManager.instance.VolumeChangedEvent += VolumeChanged;
+    }
+
     public void SetBasement()
     {
         sound.clip = basement;
@@ -35,5 +40,13 @@ public class Music : MonoBehaviour
     {
         if (index == 0 && sound.clip != mainFloor) SetMainFloor();
         if (index == 1 && sound.clip != basement) SetBasement();
+    }
+
+    void Pause(bool paused) {
+        sound.volume = paused ? 0 : PauseManager.audioVolume;
+    }
+
+    void VolumeChanged(float value) {
+        sound.volume = PauseManager.Paused ? 0 : value;
     }
 }
