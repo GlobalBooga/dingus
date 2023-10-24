@@ -13,6 +13,8 @@ public class StoryEvents : MonoBehaviour
     const string youngManLeaveEvent = "YoungManLeave\n";
     const string youngmanSitEvent = "GoSit\n";
     const string killEvent = "Kill\n";
+    const string killCultistEvent = "KillCultist\n";
+    const string cultistLeaveEvent = "CultistLeave\n";
     public GameObject wigPrefab;
     public Wig wig;
     public Wig wig2;
@@ -54,6 +56,16 @@ public class StoryEvents : MonoBehaviour
 
             gotWig = true;
         };
+        wig2.onInteracted += () =>
+        {
+            objective.text = "Return to the customer";
+            foreach (var t in wigPath)
+            {
+                t.SetActive(false);
+            }
+
+            gotWig = true;
+        };
 
 
         newWigThingy = GameObject.Find("StoreNewWig");
@@ -78,13 +90,15 @@ public class StoryEvents : MonoBehaviour
         else if (eventName == killEvent) Kill();
         else if (eventName == youngmanSitEvent) YoungmanSit();
         else if (eventName == youngManLeaveEvent) YoungManLeave();
+        else if (eventName == killCultistEvent) YoungManLeave();
+        else if (eventName == cultistLeaveEvent) CultistLeave();
     }
 
     public void GoGetWig()
     {
         objective.text = "Go get a wig";
-
-        customers[0].GoSit();
+        if (!killedBroski) customers[0].GoSit();
+        else customers[2].GoSit();
 
         foreach (var t in wigPath)
         {
@@ -95,8 +109,19 @@ public class StoryEvents : MonoBehaviour
     public void YoungManLeave()
     {
         customers[1].Leave();
+
+        Invoke(nameof(CultistEnter), 8);
+    }
+
+    void CultistEnter()
+    {
         customers[2].gameObject.SetActive(true);
         customers[2].Enter();
+    }
+
+    void CultistLeave()
+    {
+        customers[2].Leave2();
     }
 
     public void OldManLeave()
@@ -104,6 +129,8 @@ public class StoryEvents : MonoBehaviour
         customers[0].Leave();
 
         Invoke(nameof(YoungmanEnter), 8);
+
+        gotWig = false;
     }
 
     void YoungmanEnter()

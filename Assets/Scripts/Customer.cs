@@ -21,6 +21,8 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void EndInteraction()
     {
+        StaticStuff.input.General.WASD.Enable();
+
         StaticStuff.instance.HideDialogueBox();
         
         interacting = false;
@@ -38,7 +40,8 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        
+        StaticStuff.input.General.WASD.Disable();
+
         if (pauseStory)
         {
             pauseStory = false;
@@ -126,6 +129,15 @@ public class Customer : MonoBehaviour, IInteractable
             anims.SetTrigger("Leave");
         };
     }
+
+    public void Leave2()
+    {
+        inky.onStoryEnded += () =>
+        {
+            anims.SetTrigger("CultistLeave");
+        };
+    }
+
 
     public void Enter()
     {

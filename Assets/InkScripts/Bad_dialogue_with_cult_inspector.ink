@@ -14,8 +14,11 @@ Oi! Quiet down when speaking to me like that! It's Mr. Patrick Cox the barbersho
 How's business been. I trust that you are doing your duties well as an Emissary of Hair.
 
 * About that.
-I uh... I sold the last wig I had on hand earlier today.
--> shock
+-> thighny
+
+=== thighny ===
+* I uh... I sold the last wig I had on hand earlier today.
+-> shock 
 
 === manners ===
 Oi! Watch your manners before I show you what happens when you don't.
@@ -23,8 +26,7 @@ Oi! Watch your manners before I show you what happens when you don't.
 I have come here today to do a routine inspection to make sure you're doing your duties well as an Emissary of Hair.
 
 * About that.
-I uh... I sold the last wig I had on hand earlier today.
--> shock
+-> thighny
 
 === shock ===
 You... You're high enough in the Emissaries of Hair to open your own barbershop in hopes of collecting hair for the cult. But you don't even have any wigs.
@@ -43,7 +45,7 @@ More time?! What about the guy who just left with a below par haircut huh?
 === pushover ===
 I think it's cause you're a pushover. And pushovers don't run undercover facilities. I'm gonna have to take away your business privileges and find someone else to run this place. We'll rename it too.
 
-*\\KillCultPriest
+* Take action\\KillCultist
 -> END
-*\\LetHimWalkAway
+* Say nothing\\CultistLeave
 -> END
