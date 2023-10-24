@@ -8,13 +8,23 @@ public class Customer : MonoBehaviour, IInteractable
     InkHandler inky;
     bool waitingForWig;
 
+    public bool pauseStory;
+
     public GameObject wig;
-    
+
+    Animator anims;
+    public AudioClip[] footsteps;
+
+
     public void EndInteraction()
     {
         StaticStuff.instance.HideDialogueBox();
+        
         interacting = false;
-        startedStory = false;
+        if (!pauseStory)
+        {
+            startedStory = false;
+        }
 
         // resets the buttons in case we were making a choice
         StaticStuff.ResetButtonLayoutGroup();
@@ -25,6 +35,12 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (pauseStory)
+        {
+            pauseStory = false;
+            StaticStuff.buttonLayoutGroup.SetActive(true);
+        }
+
         // all parts
         if (interacting)
         {
@@ -43,6 +59,7 @@ public class Customer : MonoBehaviour, IInteractable
     {
         inky = GetComponent<InkHandler>();
         inky.onStoryEnded += ()=> { EndInteraction(); waitingForWig = true;};
+        anims = GetComponent<Animator>();
     }
 
     void Update()
@@ -68,5 +85,66 @@ public class Customer : MonoBehaviour, IInteractable
                 inky.ProgressStory();
             }
         }
+    }
+
+
+    public void Sit()
+    {
+        anims.Play("Sit", 0);
+    }
+
+    public void Walk()
+    {
+        anims.Play("Walk", 0);
+    }
+
+    public void Idle()
+    {
+        anims.Play("Idle",0);
+    }
+
+    public void GoSit()
+    {
+        anims.SetTrigger("GoSit");
+    }
+
+    public void Leave()
+    {
+        inky.onStoryEnded += () =>
+        {
+            anims.SetTrigger("Leave");
+        };
+    }
+
+    public void Enter()
+    {
+        anims.SetTrigger("Enter");    
+    }
+
+    public void GetGrabbed()
+    {
+        inky.onStoryEnded += () => 
+        { 
+            StaticStuff.player.GrabbedBrosky.SetActive(true);
+            StaticStuff.player.ChokeholdArm.SetActive(true);
+            StaticStuff.player.NormalArm.SetActive(false);
+            gameObject.SetActive(false);
+        };
+    }
+
+    public void GetDunked()
+    {
+        //anims.SetTrigger("Die");
+        anims.Play("youngman_die", 1);
+    }
+
+    public void Dead()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void PlayBoilingSound()
+    {
+        StaticStuff.tub.Boil();
     }
 }

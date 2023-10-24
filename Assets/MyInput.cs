@@ -53,6 +53,15 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveFingers"",
+                    ""type"": ""Button"",
+                    ""id"": ""f731b9cd-2886-4f42-ae3d-2b4d4d12f32b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7a5567b-00bd-47f9-8f1d-803f229766ec"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveFingers"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
         m_General_WASD = m_General.FindAction("WASD", throwIfNotFound: true);
         m_General_Look = m_General.FindAction("Look", throwIfNotFound: true);
         m_General_Interact = m_General.FindAction("Interact", throwIfNotFound: true);
+        m_General_MoveFingers = m_General.FindAction("MoveFingers", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +228,7 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_General_WASD;
     private readonly InputAction m_General_Look;
     private readonly InputAction m_General_Interact;
+    private readonly InputAction m_General_MoveFingers;
     public struct GeneralActions
     {
         private @MyInput m_Wrapper;
@@ -214,6 +236,7 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
         public InputAction @WASD => m_Wrapper.m_General_WASD;
         public InputAction @Look => m_Wrapper.m_General_Look;
         public InputAction @Interact => m_Wrapper.m_General_Interact;
+        public InputAction @MoveFingers => m_Wrapper.m_General_MoveFingers;
         public InputActionMap Get() { return m_Wrapper.m_General; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +255,9 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @MoveFingers.started += instance.OnMoveFingers;
+            @MoveFingers.performed += instance.OnMoveFingers;
+            @MoveFingers.canceled += instance.OnMoveFingers;
         }
 
         private void UnregisterCallbacks(IGeneralActions instance)
@@ -245,6 +271,9 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @MoveFingers.started -= instance.OnMoveFingers;
+            @MoveFingers.performed -= instance.OnMoveFingers;
+            @MoveFingers.canceled -= instance.OnMoveFingers;
         }
 
         public void RemoveCallbacks(IGeneralActions instance)
@@ -267,5 +296,6 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
         void OnWASD(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnMoveFingers(InputAction.CallbackContext context);
     }
 }

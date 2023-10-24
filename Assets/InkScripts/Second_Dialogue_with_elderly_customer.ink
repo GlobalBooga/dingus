@@ -43,9 +43,9 @@ In that case I'll put my trust in you once again.
 -> badreaction
 
 === goodreaction ===
-Ah sweet! I look like an old guy who thinks he's still young! Here's an extra tip for your work.
+Ah sweet! I look like an old guy who thinks he's still young! Here's an extra tip for your work.\\OldManLeave
 -> END
 
 === badreaction ===
-Ah man! What did you just do to my new hair! I can't believe I'm still gonna pay you a decent amount.
+Ah man! What did you just do to my new hair! I can't believe I'm still gonna pay you a decent amount.\\OldManLeave
 -> END
