@@ -27,5 +27,5 @@ I have come here today to do a routine inspection to make sure you're doing your
 === merchandise ===
 Oh really!? That's just lovely. Please fetch me the wig and allow me to bathe in our lords warmth.
 
-* [FetchWig]
+* Get wig\\GoGetWig
 -> END

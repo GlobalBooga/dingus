@@ -13,6 +13,7 @@ public class StaticStuff : MonoBehaviour
     public static GameObject buttonLayoutGroup;
     public static SecretRoomBlocker secretRoomBlocker;
     public static Tub tub;
+    public static Door door;
 
     public static Transform goUpstairsTrigger;
     public static Transform goDownstairsTrigger;
@@ -56,6 +57,8 @@ public class StaticStuff : MonoBehaviour
 
         transitionImage = GameObject.Find("TransitionImage").GetComponent<TransitionImage>();
         secretRoomBlocker = GameObject.Find("SecretRoomBlocker").GetComponent<SecretRoomBlocker>();
+
+        door = GameObject.Find("door bell trigger").GetComponent<Door>();
 
         buttonLayoutGroup = GameObject.Find("DialogueChoices");
         buttonLayoutDefaultPos = buttonLayoutGroup.transform.position;

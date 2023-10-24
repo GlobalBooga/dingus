@@ -15,6 +15,7 @@ public class StoryEvents : MonoBehaviour
     const string killEvent = "Kill\n";
     public GameObject wigPrefab;
     public Wig wig;
+    public Wig wig2;
     public GameObject[] wigPath;
     public GameObject[] killPath;
     public GameObject[] storeWigPath;
@@ -27,7 +28,10 @@ public class StoryEvents : MonoBehaviour
     public Customer[] customers;
 
     GameObject newWigThingy;
-    
+
+    public static bool killedBroski;
+    bool badWigStyling;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -54,13 +58,22 @@ public class StoryEvents : MonoBehaviour
 
         newWigThingy = GameObject.Find("StoreNewWig");
         newWigThingy.SetActive(false);
+
+        customers[1].gameObject.SetActive(false);
+        customers[2].gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        customers[0].Enter();
+        customers[2].isCultist = true;
     }
 
     public void CallEvent(string eventName)
     {
         if (eventName == getWigEvent) GoGetWig();
         else if (eventName == goodStylingEvent) StartCoroutine(WigStyling());
-        else if (eventName == badStylingEvent) StartCoroutine(WigStyling());
+        else if (eventName == badStylingEvent) { badWigStyling = true; StartCoroutine(WigStyling()); }
         else if (eventName == oldManLeaveEvent) OldManLeave();
         else if (eventName == killEvent) Kill();
         else if (eventName == youngmanSitEvent) YoungmanSit();
@@ -82,6 +95,8 @@ public class StoryEvents : MonoBehaviour
     public void YoungManLeave()
     {
         customers[1].Leave();
+        customers[2].gameObject.SetActive(true);
+        customers[2].Enter();
     }
 
     public void OldManLeave()
@@ -93,6 +108,7 @@ public class StoryEvents : MonoBehaviour
 
     void YoungmanEnter()
     {
+        customers[1].gameObject.SetActive(true);
         customers[1].Enter();
     }
 
@@ -123,7 +139,12 @@ public class StoryEvents : MonoBehaviour
         StaticStuff.transitionImage.StartTransition(0, 1);
 
         yield return new WaitForSeconds(1);
-        inkRefs[0].GetComponent<Customer>().wig.SetActive(true);
+        if (!killedBroski)
+        {
+            if (!badWigStyling) customers[0].wig.SetActive(true);
+            else customers[0].wigbad.SetActive(true);
+        }
+        else customers[2].wig.SetActive(true);
 
         StaticStuff.transitionImage.StartTransition(1, 0);
 
@@ -161,10 +182,17 @@ public class StoryEvents : MonoBehaviour
         }
 
         newWigThingy.SetActive(true);
+        killedBroski = true;
     }
 
     public void WigStored()
     {
         objective.text = "";
+        foreach (var t in storeWigPath)
+        {
+            t.SetActive(false);
+        }
+        customers[2].gameObject.SetActive(true);
+        customers[2].Enter();
     }
 }

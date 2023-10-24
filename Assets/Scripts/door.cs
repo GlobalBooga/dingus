@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
-public class door : MonoBehaviour
+public class Door : MonoBehaviour
 {
     AudioSource sound;
 
@@ -13,6 +12,11 @@ public class door : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        PlaySound();
+    }
+
+    public void PlaySound()
     {
         if (sound.isPlaying) return;
         sound.Play();

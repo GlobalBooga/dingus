@@ -8,9 +8,12 @@ public class Customer : MonoBehaviour, IInteractable
     InkHandler inky;
     bool waitingForWig;
 
-    public bool pauseStory;
+    [HideInInspector] public bool isCultist;
+
+    [HideInInspector] public bool pauseStory;
 
     public GameObject wig;
+    public GameObject wigbad;
 
     Animator anims;
     public AudioClip[] footsteps;
@@ -35,6 +38,7 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        
         if (pauseStory)
         {
             pauseStory = false;
@@ -58,7 +62,7 @@ public class Customer : MonoBehaviour, IInteractable
     private void Awake()
     {
         inky = GetComponent<InkHandler>();
-        inky.onStoryEnded += ()=> { EndInteraction(); waitingForWig = true;};
+        inky.onStoryEnded += () => { EndInteraction(); waitingForWig = true; };
         anims = GetComponent<Animator>();
     }
 
@@ -70,6 +74,13 @@ public class Customer : MonoBehaviour, IInteractable
             if (!startedStory)
             {
                 startedStory = true;
+                if (isCultist)
+                {
+                    if (StoryEvents.killedBroski) inky.StartStory(0);
+                    else inky.StartStory(2);
+                    return;
+                }
+
                 inky.StartStory(0);
             }
 
@@ -146,5 +157,10 @@ public class Customer : MonoBehaviour, IInteractable
     public void PlayBoilingSound()
     {
         StaticStuff.tub.Boil();
+    }
+
+    public void TriggerBellSound()
+    {
+        StaticStuff.door.PlaySound();
     }
 }
