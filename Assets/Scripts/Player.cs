@@ -16,9 +16,15 @@ public class Player : MonoBehaviour
     IInteractable interactable;
 
     public AudioSource mySfx;
+    public AudioSource myFootstepsSFX;
     [SerializeField] AudioClip snipSfx;
-    [SerializeField] AudioClip slapSfx;
-    [SerializeField] AudioClip footsteps;
+    [SerializeField] AudioClip[] footstepsTopFloor;
+    [SerializeField] AudioClip[] footstepsBasement;
+
+    bool isInBasement;
+
+    float footstepDelay = 0.3f;
+    float footTime;
 
 
     private void Start()
@@ -50,6 +56,19 @@ public class Player : MonoBehaviour
     {
         Vector3 newDir = moveDir.x * transform.right + moveDir.z * transform.forward;
         rb.AddForce(newDir * rb.mass * speed, ForceMode.Force);
+    }
+
+    private void Update()
+    {
+        if (moveDir != Vector3.zero && footTime > footstepDelay)
+        {
+            footTime = 0;
+            myFootstepsSFX.clip = !isInBasement? footstepsTopFloor[Random.Range(0, footstepsTopFloor.Length)] :
+                footstepsBasement[Random.Range(0, footstepsBasement.Length)];
+            myFootstepsSFX.Play();
+        }
+
+        footTime += Time.deltaTime;
     }
 
     void Look(InputAction.CallbackContext ctx)
@@ -89,6 +108,15 @@ public class Player : MonoBehaviour
         {
             StaticStuff.instance.ShowInteractPrompt();
             interactable = interacter;
+        }
+
+        if (other.CompareTag("Basement"))
+        {
+            isInBasement = true;
+        }
+        else
+        {
+            isInBasement = false;
         }
     }
 

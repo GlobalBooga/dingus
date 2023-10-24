@@ -9,7 +9,11 @@ public class Customer : MonoBehaviour, IInteractable
     bool waitingForWig;
 
     public GameObject wig;
-    
+
+    Animator anims;
+    public AudioClip[] footsteps;
+
+
     public void EndInteraction()
     {
         StaticStuff.instance.HideDialogueBox();
@@ -43,6 +47,7 @@ public class Customer : MonoBehaviour, IInteractable
     {
         inky = GetComponent<InkHandler>();
         inky.onStoryEnded += ()=> { EndInteraction(); waitingForWig = true;};
+        anims = GetComponent<Animator>();
     }
 
     void Update()
@@ -68,5 +73,36 @@ public class Customer : MonoBehaviour, IInteractable
                 inky.ProgressStory();
             }
         }
+    }
+
+
+    public void Sit()
+    {
+        anims.Play("Sit", 0);
+    }
+
+    public void Walk()
+    {
+        anims.Play("Walk", 0);
+    }
+
+    public void Idle()
+    {
+        anims.Play("Idle",0);
+    }
+
+    public void GoSit()
+    {
+        anims.SetTrigger("GoSit");
+    }
+
+    public void Leave()
+    {
+        anims.SetTrigger("Leave");
+    }
+
+    public void Enter()
+    {
+        anims.SetTrigger("Enter");    
     }
 }

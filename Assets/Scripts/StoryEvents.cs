@@ -9,6 +9,9 @@ public class StoryEvents : MonoBehaviour
     const string getWigEvent = "GoGetWig\n";
     const string badStylingEvent = "BadWigStyling\n";
     const string goodStylingEvent = "GoodWigStyling\n";
+    const string oldManLeaveEvent = "OldManLeave\n";
+    const string youngmanSitEvent = "GoSit\n";
+    const string killEvent = "Kill\n";
     public GameObject wigPrefab;
     public Wig wig;
     public GameObject[] wigPath;
@@ -17,7 +20,8 @@ public class StoryEvents : MonoBehaviour
 
     public static bool gotWig;
 
-    InkHandler currentInkRef;
+    public InkHandler[] inkRefs;
+    public Customer[] customers;
 
     private void Awake()
     {
@@ -43,22 +47,46 @@ public class StoryEvents : MonoBehaviour
         };
     }
 
-    public void CallEvent(string eventName, InkHandler sender)
+    public void CallEvent(string eventName)
     {
-        currentInkRef = sender;
         if (eventName == getWigEvent) GoGetWig();
         else if (eventName == goodStylingEvent) StartCoroutine(WigStyling());
         else if (eventName == badStylingEvent) StartCoroutine(WigStyling());
+        else if (eventName == oldManLeaveEvent) OldManLeave();
+        else if (eventName == killEvent) Kill();
+        else if (eventName == youngmanSitEvent) YoungmanSit();
     }
 
     public void GoGetWig()
     {
         objective.text = "Go get a wig";
 
+        customers[0].GoSit();
+
         foreach (var t in wigPath)
         {
             t.SetActive(true);
         }
+    }
+
+
+    public void OldManLeave()
+    {
+        customers[0].Leave();
+
+        Invoke(nameof(YoungmanEnter), 8);
+    }
+
+    void YoungmanEnter()
+    {
+
+        customers[1].Enter();
+    }
+
+    void YoungmanSit()
+    {
+        StaticStuff.instance.HideDialogueBox();
+        customers[1].GoSit();
     }
 
 
@@ -80,12 +108,18 @@ public class StoryEvents : MonoBehaviour
         StaticStuff.transitionImage.StartTransition(0, 1);
 
         yield return new WaitForSeconds(1);
-        currentInkRef.GetComponent<Customer>().wig.SetActive(true);
+        inkRefs[0].GetComponent<Customer>().wig.SetActive(true);
 
         StaticStuff.transitionImage.StartTransition(1, 0);
 
 
         StaticStuff.buttonLayoutGroup.SetActive(true);
         StaticStuff.instance.ShowDialogueBox();
+    }
+
+    public void Kill()
+    {
+        customers[1].EndInteraction();
+
     }
 }

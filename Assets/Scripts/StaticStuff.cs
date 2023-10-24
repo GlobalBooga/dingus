@@ -151,6 +151,7 @@ public class StaticStuff : MonoBehaviour
 
         for (int i = 0; i < text.Length; i++)
         {
+            if (text[i] == '\\') break;
             dialogueText.text += text[i];
             yield return new WaitForSeconds(printDelay);
         }
