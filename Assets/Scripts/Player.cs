@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] float sens, speed;
     [SerializeField] Animator rightAnimator;
+    [SerializeField] Animator leftAnimator;
     Rigidbody rb;
     Camera cam;
 

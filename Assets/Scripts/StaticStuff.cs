@@ -19,6 +19,10 @@ public class StaticStuff : MonoBehaviour
     public static Transform goDownstairsTrigger;
     public static TransitionImage transitionImage;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of bbb867b (prototda)
     public GameObject choiceButtonPrefab;
     static Vector3 buttonLayoutDefaultPos;
 
@@ -53,8 +57,11 @@ public class StaticStuff : MonoBehaviour
 
         input = new MyInput();
 
+<<<<<<< HEAD
         tub = GameObject.Find("sacrifice").GetComponent<Tub>();
 
+=======
+>>>>>>> parent of bbb867b (prototda)
         transitionImage = GameObject.Find("TransitionImage").GetComponent<TransitionImage>();
         secretRoomBlocker = GameObject.Find("SecretRoomBlocker").GetComponent<SecretRoomBlocker>();
 

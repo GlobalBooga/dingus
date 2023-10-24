@@ -26,8 +26,13 @@ public class GoDownstairs : MonoBehaviour
         requestingTP = false;
 
         StaticStuff.player.transform.position = StaticStuff.goUpstairsTrigger.position - StaticStuff.goUpstairsTrigger.right;
+<<<<<<< HEAD
         StaticStuff.player.SetLookRotation(-StaticStuff.goUpstairsTrigger.right);
         StaticStuff.minimapCamera.position = new Vector3(StaticStuff.minimapCamera.position.x, -20f, StaticStuff.minimapCamera.position.z);
+=======
+        StaticStuff.player.transform.rotation.SetLookRotation(StaticStuff.goUpstairsTrigger.right);
+        StaticStuff.minimapCamera.position += Vector3.down * 10;
+>>>>>>> parent of bbb867b (prototda)
         StaticStuff.transitionImage.StartTransition(1,0);
     }
 }
