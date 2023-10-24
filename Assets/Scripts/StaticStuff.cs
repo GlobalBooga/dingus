@@ -2,8 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class StaticStuff : MonoBehaviour
-{
+public class StaticStuff : MonoBehaviour {
     public static StaticStuff instance;
     public static GameObject minimap;
     public static Transform minimapCamera;
@@ -30,23 +29,19 @@ public class StaticStuff : MonoBehaviour
     AnimationCurve curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     Vector3 shown, hidden;
     TextMeshProUGUI dialogueText;
-    public static bool isReadyForDialogue {  get; private set; }
-    public static bool isPrintingDialogue {  get; private set; }
+    public static bool isReadyForDialogue { get; private set; }
+    public static bool isPrintingDialogue { get; private set; }
 
 
     // interact prompt
     GameObject interactPrompt;
 
 
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
+    private void Awake() {
+        if (instance != null && instance != this) {
             Destroy(this);
             return;
-        }
-        else
-        {
+        } else {
             instance = this;
         }
 
@@ -81,27 +76,23 @@ public class StaticStuff : MonoBehaviour
         goDownstairsTrigger = GameObject.Find("GoDownstairs").transform;
     }
 
-    public void ShowDialogueBox()
-    {
+    public void ShowDialogueBox() {
         if (currentDialogueRoutine != null) StopCoroutine(currentDialogueRoutine);
         currentDialogueRoutine = StartCoroutine(DialogueRoutine(true));
     }
-    
-    public void HideDialogueBox()
-    {
+
+    public void HideDialogueBox() {
         if (currentDialogueRoutine != null) StopCoroutine(currentDialogueRoutine);
         currentDialogueRoutine = StartCoroutine(DialogueRoutine(false));
     }
 
-    IEnumerator DialogueRoutine(bool show)
-    {
+    IEnumerator DialogueRoutine(bool show) {
         Vector3 start = dialogueBox.position;
         Vector3 end = show == true ? shown : hidden;
 
         if (!show) dialogueText.text = "";
 
-        for (float i = 0; i < 1; i += Time.deltaTime * speed) 
-        {
+        for (float i = 0; i < 1; i += Time.deltaTime * speed) {
             dialogueBox.position = Vector3.Lerp(start, end, curve.Evaluate(i));
             yield return null;
         }
@@ -114,32 +105,26 @@ public class StaticStuff : MonoBehaviour
         isReadyForDialogue = show ? true : false;
     }
 
-    public void SetDialogueShown()
-    {
+    public void SetDialogueShown() {
         dialogueBox.position = shown;
     }
 
-    public void SetDialogueHidden()
-    {
+    public void SetDialogueHidden() {
         dialogueBox.position = hidden;
     }
 
 
-    public void ShowInteractPrompt()
-    {
+    public void ShowInteractPrompt() {
         interactPrompt.SetActive(true);
     }
 
-    public void HideInteractPrompt()
-    {
+    public void HideInteractPrompt() {
         interactPrompt.SetActive(false);
     }
-    
 
-    public void PrintDialogue(string text)
-    {
-        if (currentTextPrintingRoutine != null)
-        {
+
+    public void PrintDialogue(string text) {
+        if (currentTextPrintingRoutine != null) {
             StopCoroutine(currentTextPrintingRoutine);
             dialogueText.text = text;
             currentTextPrintingRoutine = null;
@@ -151,12 +136,10 @@ public class StaticStuff : MonoBehaviour
         currentTextPrintingRoutine = StartCoroutine(PrintDialogueRoutine(text));
     }
 
-    IEnumerator PrintDialogueRoutine(string text)
-    {
+    IEnumerator PrintDialogueRoutine(string text) {
         dialogueText.text = "";
 
-        for (int i = 0; i < text.Length; i++)
-        {
+        for (int i = 0; i < text.Length; i++) {
             if (text[i] == '\\') break;
             dialogueText.text += text[i];
             yield return new WaitForSeconds(printDelay);
@@ -166,11 +149,9 @@ public class StaticStuff : MonoBehaviour
         isPrintingDialogue = false;
     }
 
-    public static void ResetButtonLayoutGroup()
-    {
+    public static void ResetButtonLayoutGroup() {
         // delete other choices
-        for (int i = 0; i < buttonLayoutGroup.transform.childCount; i++)
-        {
+        for (int i = 0; i < buttonLayoutGroup.transform.childCount; i++) {
             // make them fade away
             Destroy(buttonLayoutGroup.transform.GetChild(i).gameObject);
         }
@@ -181,9 +162,7 @@ public class StaticStuff : MonoBehaviour
     }
 
 
-    public static float RadsToDeg(float rads)
-    {
+    public static float RadsToDeg(float rads) {
         return rads * 57.2958f;
     }
 }
-
