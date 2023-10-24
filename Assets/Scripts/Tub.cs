@@ -11,6 +11,9 @@ public class Tub : MonoBehaviour, IInteractable
     public AudioClip newWig;
 
     bool boilFinished;
+    bool boilStarted;
+
+    bool interacted;
 
     private void Awake()
     {
@@ -20,12 +23,14 @@ public class Tub : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        if (!suond.isPlaying && !boilFinished)
+        if (boilStarted && !suond.isPlaying && !boilFinished)
         {
             boilFinished = true;
             anims.SetTrigger("NewWig");
             suond.clip = newWig;
             suond.Play();
+
+            StoryEvents.instance.objective.text = "Take the wig";
         }
     }
 
@@ -36,6 +41,17 @@ public class Tub : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (interacted) 
+        { 
+            if (suond.clip == newWig && !suond.isPlaying)
+            {
+                anims.SetTrigger("TakeWig");
+                StoryEvents.instance.WigTaken();
+                enabled = false;
+            }
+            return; 
+        }
+        interacted = true;
         StaticStuff.player.GrabbedBrosky.SetActive(false);
         StaticStuff.player.ChokeholdArm.SetActive(false);
         StaticStuff.player.NormalArm.SetActive(true);
@@ -46,5 +62,6 @@ public class Tub : MonoBehaviour, IInteractable
     public void Boil()
     {
         suond.Play();
+        boilStarted = true;
     }
 }

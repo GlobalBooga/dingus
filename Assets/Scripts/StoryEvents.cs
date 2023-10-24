@@ -17,6 +17,7 @@ public class StoryEvents : MonoBehaviour
     public Wig wig;
     public GameObject[] wigPath;
     public GameObject[] killPath;
+    public GameObject[] storeWigPath;
 
     public TextMeshProUGUI objective;
 
@@ -25,6 +26,8 @@ public class StoryEvents : MonoBehaviour
     public InkHandler[] inkRefs;
     public Customer[] customers;
 
+    GameObject newWigThingy;
+    
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -47,6 +50,10 @@ public class StoryEvents : MonoBehaviour
 
             gotWig = true;
         };
+
+
+        newWigThingy = GameObject.Find("StoreNewWig");
+        newWigThingy.SetActive(false);
     }
 
     public void CallEvent(string eventName)
@@ -143,5 +150,21 @@ public class StoryEvents : MonoBehaviour
     {
         customers[1].gameObject.SetActive(true);
         customers[1].GetDunked();
+    }
+
+    public void WigTaken()
+    {
+        objective.text = "Store the wig";
+        foreach (var t in storeWigPath)
+        {
+            t.SetActive(true);
+        }
+
+        newWigThingy.SetActive(true);
+    }
+
+    public void WigStored()
+    {
+        objective.text = "";
     }
 }

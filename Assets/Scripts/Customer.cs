@@ -134,12 +134,13 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void GetDunked()
     {
-        anims.SetTrigger("Die");
+        //anims.SetTrigger("Die");
+        anims.Play("youngman_die", 1);
     }
 
     public void Dead()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void PlayBoilingSound()
