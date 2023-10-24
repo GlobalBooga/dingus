@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
         mySfx = GetComponent<AudioSource>();
 
         rotationY = StaticStuff.RadsToDeg(transform.rotation.eulerAngles.y);
+        PauseManager.instance.SensChangedEvent += (newSens => sens = newSens);
     }
 
     private void OnDestroy()

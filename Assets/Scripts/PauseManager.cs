@@ -11,14 +11,14 @@ public class PauseManager : MonoBehaviour {
     public static bool Paused;
 
     public event Action<bool> PauseEvent;
-    public event Action<float> VolumeChangedEvent;
+    public event Action<float> VolumeChangedEvent, SensChangedEvent;
 
     public static float audioVolume;
     public static float sens;
 
     [SerializeField] CanvasGroup pauseCanvas;
-    [SerializeField] Slider audioSlider;
-    [SerializeField] TextMeshProUGUI audioText;
+    [SerializeField] Slider audioSlider, sensSlider;
+    [SerializeField] TextMeshProUGUI audioText, sensText;
 
     AudioSource source;
 
@@ -31,8 +31,16 @@ public class PauseManager : MonoBehaviour {
         StaticStuff.input.General.Pause.performed += Pause;
         StaticStuff.input.Paused.Unpause.performed += Pause;
         audioSlider.onValueChanged.AddListener(SetAudioVolume);
+        sensSlider.onValueChanged.AddListener(SetSens);
+
         audioVolume = 1;
         audioSlider.value = audioVolume;
+        audioText.text = audioVolume.ToString();
+
+        sens = .2f;
+        sensSlider.value = sens;
+        sensText.text = sens.ToString();
+
 
         pauseCanvas.FullDisable();
     }
@@ -68,5 +76,11 @@ public class PauseManager : MonoBehaviour {
         audioVolume = value;
         source.volume = value;
         audioText.text = MathF.Round(value, 2).ToString();
+        VolumeChangedEvent?.Invoke(value);
+    }
+
+    void SetSens(float sens) {
+        sensText.text = MathF.Round(sens, 2).ToString();
+        SensChangedEvent?.Invoke(sens);
     }
 }
