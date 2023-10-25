@@ -14,4 +14,8 @@ public class GameSceneManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(1);
     }
+
+    public void Quit() {
+        Application.Quit();
+    }
 }
